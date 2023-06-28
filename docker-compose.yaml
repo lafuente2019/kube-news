@@ -1,0 +1,39 @@
+version: '3.8'
+
+volumes:
+  postgres-volume:
+
+networks:
+  kube-lafuente-net:
+    driver: bridge
+
+services:
+  web:
+    image: valterlafuentejr/kube-lafuente:v1
+    ports:
+    - 8080:8080
+    networks:
+      - kube-lafuente-net
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_PASSWORD: jr123 
+      POSTGRES_USER: kubelafuente 
+      POSTGRES_DB: kubelafuente
+      DB_HOST: postgres
+  
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    networks:
+
+     - kube-lafuente-net
+    volumes:
+     - postgres-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: jr123 
+      POSTGRES_USER: kubelafuente 
+      POSTGRES_DB: kubelafuente
+
+
